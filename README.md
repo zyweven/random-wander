@@ -13,8 +13,7 @@ A Chrome extension that opens random bookmarked websites in new tabs, helping yo
 - 📚 Supports bookmark integration
 
 ### 📥 Installation
-1. 🔽 Download this extension from Chrome Web Store (coming soon)
-2. 🛠️ Or install manually:
+1. 🛠️ Or install manually:
    - Clone this repository
    - Open Chrome and go to `chrome://extensions/`
    - Enable "Developer mode"
@@ -38,8 +37,7 @@ A Chrome extension that opens random bookmarked websites in new tabs, helping yo
 - 📚 支持书签集成
 
 ### 📥 安装方法
-1. 🔽 从Chrome网上应用店下载安装（即将上线）
-2. 🛠️ 或手动安装：
+1. 🛠️ 手动安装：
    - 克隆此仓库
    - 打开Chrome浏览器，访问`chrome://extensions/`
    - 开启"开发者模式"
@@ -50,9 +48,3 @@ A Chrome extension that opens random bookmarked websites in new tabs, helping yo
 - ⚙️ 通过扩展程序的选项页面配置您的网站列表
 - 🖱️ 点击扩展图标可快速访问设置
 
----
-
-
-## 🤝 Contributing / 贡献
-Welcome to contribute to this project! Feel free to submit issues and pull requests.
-欢迎为这个项目做出贡献！随时欢迎提交问题和拉取请求。
