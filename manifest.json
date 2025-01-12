@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "随机漫游",
+  "version": "1.0",
+  "description": "在新标签页随机打开用户设定的网址",
+  "permissions": [
+    "storage",
+    "tabs",
+    "bookmarks"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "chrome_url_overrides": {
+    "newtab": "options/options.html"
+  },
+  "options_page": "options/options.html"
+} 

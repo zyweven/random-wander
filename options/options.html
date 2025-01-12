@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <h1>随机漫游设置</h1>
+    <div class="url-input">
+      <input type="url" id="newUrl" placeholder="输入网址">
+      <button id="addUrl">添加</button>
+    </div>
+    <div class="bookmark-import">
+      <button id="importBookmarks">从书签导入</button>
+      <select id="bookmarkFolder" style="display: none;">
+        <option value="">选择书签文件夹...</option>
+      </select>
+    </div>
+    <ul id="urlList"></ul>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html> 
