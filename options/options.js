@@ -261,11 +261,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 处理导入包选择
-  importPackageSelect.addEventListener('change', (e) => {
+  // 修改书签文件夹选择的处理
+  bookmarkFolder.addEventListener('change', async (e) => {
+    if (importPackageSelect.value === 'new') {
+      try {
+        const folderId = e.target.value;
+        if (folderId) {
+          // 获取选中的书签文件夹信息
+          const [folder] = await chrome.bookmarks.get(folderId);
+          if (folder) {
+            // 自动填充新包名输入框
+            newImportPackageName.value = folder.title;
+          }
+        }
+      } catch (error) {
+        console.error('获取书签文件夹信息时出错:', error);
+      }
+    }
+  });
+
+  // 修改导入包选择的处理
+  importPackageSelect.addEventListener('change', async (e) => {
     const isNewPackage = e.target.value === 'new';
     newImportPackageName.style.display = isNewPackage ? 'block' : 'none';
-    if (!isNewPackage) {
+    
+    if (isNewPackage && bookmarkFolder.value) {
+      try {
+        // 获取选中的书签文件夹信息
+        const [folder] = await chrome.bookmarks.get(bookmarkFolder.value);
+        if (folder) {
+          // 自动填充新包名输入框
+          newImportPackageName.value = folder.title;
+        }
+      } catch (error) {
+        console.error('获取书签文件夹信息时出错:', error);
+      }
+    } else {
       newImportPackageName.value = '';
     }
   });
