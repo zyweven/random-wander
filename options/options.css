@@ -257,6 +257,7 @@ button {
   gap: 10px;
   border-bottom: 1px solid var(--border-color);
   background: white;
+  transition: background-color 0.2s ease;
 }
 
 .url-item:last-child {
@@ -264,10 +265,7 @@ button {
 }
 
 .url-item span {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: none;
 }
 
 /* 编辑包名称 */
@@ -428,4 +426,21 @@ select option {
   select {
     background-position: right 12px center;
   }
+} 
+
+/* URL链接样式 */
+.url-link {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+}
+
+.url-link:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
 } 

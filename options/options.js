@@ -60,7 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
       urlList.className = 'url-list';
       urlList.innerHTML = pkg.urls.map(url => `
         <li class="url-item">
-          <span title="${url}">${url}</span>
+          <a href="${url}" 
+             title="${url}"
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="url-link">
+            ${url}
+          </a>
           <button class="delete" data-package="${name}" data-url="${url}">删除</button>
         </li>
       `).join('');
