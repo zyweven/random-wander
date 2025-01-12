@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // 创建包的显示区域
       const div = document.createElement('div');
       div.className = 'package-item';
+      div.setAttribute('data-enabled', pkg.enabled);
       
       // 创建包的各个元素
       const header = document.createElement('div');
@@ -53,19 +54,38 @@ document.addEventListener('DOMContentLoaded', () => {
       info.className = 'package-info';
       info.innerHTML = `包含 ${pkg.urls.length} 个网址`;
 
+      const urlListContainer = document.createElement('div');
+      urlListContainer.className = 'url-list-container';
+
       const urlList = document.createElement('ul');
       urlList.className = 'url-list';
       urlList.innerHTML = pkg.urls.map(url => `
         <li class="url-item">
-          <span title="${url}">${url}</span>
+          <img class="url-favicon" src="${getFaviconUrl(url)}" alt="" 
+               onerror="this.style.display='none'">
+          <div class="url-content">
+            <a href="${url}" 
+               title="${url}"
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="url-link">
+              <div class="url-text">
+                <div class="url-site-name">${getWebsiteName(url)}</div>
+                <div class="url-full">${url}</div>
+              </div>
+            </a>
+          </div>
           <button class="delete" data-package="${name}" data-url="${url}">删除</button>
         </li>
       `).join('');
 
+      // 将 URL 列表放入容器
+      urlListContainer.appendChild(urlList);
+
       // 组装包的结构
       div.appendChild(header);
       div.appendChild(info);
-      div.appendChild(urlList);
+      div.appendChild(urlListContainer);
       packageList.appendChild(div);
 
       // 为信息区域添加点击事件
@@ -82,16 +102,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 获取当前卡片
         const currentCard = div;
+        const isExpanded = currentCard.classList.contains('expanded');
 
-        // 关闭其他所有卡片
-        document.querySelectorAll('.package-item').forEach(pkg => {
-          if (pkg !== currentCard) {
-            pkg.classList.remove('expanded');
-          }
+        // 先关闭所有卡片
+        document.querySelectorAll('.package-item.expanded').forEach(pkg => {
+          pkg.classList.remove('expanded');
         });
 
-        // 切换当前卡片
-        currentCard.classList.toggle('expanded');
+        // 如果当前卡片未展开，则展开它
+        if (!isExpanded) {
+          currentCard.classList.add('expanded');
+        }
       });
 
       // 添加编辑包名称的功能
@@ -200,7 +221,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (e.target.matches('input[type="checkbox"]')) {
       const packageName = e.target.dataset.package;
-      packages[packageName].enabled = e.target.checked;
+      const isEnabled = e.target.checked;
+      packages[packageName].enabled = isEnabled;
+      
+      // 更新包的视觉状态
+      const packageItem = e.target.closest('.package-item');
+      packageItem.setAttribute('data-enabled', isEnabled);
+      
       await chrome.storage.sync.set({ packages });
     }
     
@@ -215,7 +242,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const { package: packageName, url } = e.target.dataset;
       packages[packageName].urls = packages[packageName].urls.filter(u => u !== url);
       await chrome.storage.sync.set({ packages });
-      loadPackages();
+      
+      // 只更新 URL 列表，不关闭抽屉
+      const urlList = e.target.closest('.url-list');
+      urlList.innerHTML = packages[packageName].urls.map(url => `
+        <li class="url-item">
+          <img class="url-favicon" src="${getFaviconUrl(url)}" alt="" 
+               onerror="this.style.display='none'">
+          <div class="url-content">
+            <a href="${url}" 
+               title="${url}"
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="url-link">
+              <div class="url-text">
+                <div class="url-site-name">${getWebsiteName(url)}</div>
+                <div class="url-full">${url}</div>
+              </div>
+            </a>
+          </div>
+          <button class="delete" data-package="${packageName}" data-url="${url}">删除</button>
+        </li>
+      `).join('');
     }
   });
 
@@ -254,11 +302,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 处理导入包选择
-  importPackageSelect.addEventListener('change', (e) => {
+  // 修改书签文件夹选择的处理
+  bookmarkFolder.addEventListener('change', async (e) => {
+    if (importPackageSelect.value === 'new') {
+      try {
+        const folderId = e.target.value;
+        if (folderId) {
+          // 获取选中的书签文件夹信息
+          const [folder] = await chrome.bookmarks.get(folderId);
+          if (folder) {
+            // 自动填充新包名输入框
+            newImportPackageName.value = folder.title;
+          }
+        }
+      } catch (error) {
+        console.error('获取书签文件夹信息时出错:', error);
+      }
+    }
+  });
+
+  // 修改导入包选择的处理
+  importPackageSelect.addEventListener('change', async (e) => {
     const isNewPackage = e.target.value === 'new';
     newImportPackageName.style.display = isNewPackage ? 'block' : 'none';
-    if (!isNewPackage) {
+    
+    if (isNewPackage && bookmarkFolder.value) {
+      try {
+        // 获取选中的书签文件夹信息
+        const [folder] = await chrome.bookmarks.get(bookmarkFolder.value);
+        if (folder) {
+          // 自动填充新包名输入框
+          newImportPackageName.value = folder.title;
+        }
+      } catch (error) {
+        console.error('获取书签文件夹信息时出错:', error);
+      }
+    } else {
       newImportPackageName.value = '';
     }
   });
@@ -423,6 +502,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+
+  // 添加一个函数来获取网站图标
+  function getFaviconUrl(url) {
+    try {
+      const urlObj = new URL(url);
+      return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+    } catch {
+      return '';
+    }
+  }
+
+  // 添加一个函数来获取网站名称
+  function getWebsiteName(url) {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.hostname.replace('www.', '');
+    } catch {
+      return url;
+    }
+  }
+
+  // 点击事件处理
+  document.addEventListener('click', (e) => {
+    const expandedPackages = document.querySelectorAll('.package-item.expanded');
+    if (!Array.from(expandedPackages).some(pkg => pkg.contains(e.target))) {
+      expandedPackages.forEach(pkg => {
+        pkg.classList.remove('expanded');
+      });
+    }
+  });
 
   loadPackages();
 }); 
