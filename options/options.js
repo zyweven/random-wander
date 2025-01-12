@@ -242,7 +242,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const { package: packageName, url } = e.target.dataset;
       packages[packageName].urls = packages[packageName].urls.filter(u => u !== url);
       await chrome.storage.sync.set({ packages });
-      loadPackages();
+      
+      // 只更新 URL 列表，不关闭抽屉
+      const urlList = e.target.closest('.url-list');
+      urlList.innerHTML = packages[packageName].urls.map(url => `
+        <li class="url-item">
+          <img class="url-favicon" src="${getFaviconUrl(url)}" alt="" 
+               onerror="this.style.display='none'">
+          <div class="url-content">
+            <a href="${url}" 
+               title="${url}"
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="url-link">
+              <div class="url-text">
+                <div class="url-site-name">${getWebsiteName(url)}</div>
+                <div class="url-full">${url}</div>
+              </div>
+            </a>
+          </div>
+          <button class="delete" data-package="${packageName}" data-url="${url}">删除</button>
+        </li>
+      `).join('');
     }
   });
 
