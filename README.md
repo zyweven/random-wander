@@ -1,6 +1,6 @@
 # 🎲 Random Wanderer / 随机漫游
 
-[English](#english) | [中文](#chinese)
+[English](#-english) | [中文](#-chinese)
 
 ## 🌍 English
 
@@ -50,9 +50,9 @@ A Chrome extension that opens random bookmarked websites in new tabs, helping yo
 - ⚙️ 通过扩展程序的选项页面配置您的网站列表
 - 🖱️ 点击扩展图标可快速访问设置
 
-
 ---
 
 
-## 📄 License / 许可证
-MIT License
+## 🤝 Contributing / 贡献
+Welcome to contribute to this project! Feel free to submit issues and pull requests.
+欢迎为这个项目做出贡献！随时欢迎提交问题和拉取请求。

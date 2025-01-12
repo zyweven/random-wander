@@ -1,4 +1,8 @@
 chrome.tabs.onCreated.addListener(async (tab) => {
+  if (tab.pendingUrl !== 'chrome://newtab/' && tab.pendingUrl !== 'about:blank') {
+    return;
+  }
+
   const { enabled } = await chrome.storage.sync.get(['enabled']);
   if (!enabled) return;
 
