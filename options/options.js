@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
       info.className = 'package-info';
       info.innerHTML = `包含 ${pkg.urls.length} 个网址`;
 
+      const urlListContainer = document.createElement('div');
+      urlListContainer.className = 'url-list-container';
+
       const urlList = document.createElement('ul');
       urlList.className = 'url-list';
       urlList.innerHTML = pkg.urls.map(url => `
@@ -62,10 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
         </li>
       `).join('');
 
+      // 将 URL 列表放入容器
+      urlListContainer.appendChild(urlList);
+
       // 组装包的结构
       div.appendChild(header);
       div.appendChild(info);
-      div.appendChild(urlList);
+      div.appendChild(urlListContainer);
       packageList.appendChild(div);
 
       // 为信息区域添加点击事件
@@ -82,16 +88,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 获取当前卡片
         const currentCard = div;
+        const isExpanded = currentCard.classList.contains('expanded');
 
-        // 关闭其他所有卡片
-        document.querySelectorAll('.package-item').forEach(pkg => {
-          if (pkg !== currentCard) {
-            pkg.classList.remove('expanded');
-          }
+        // 先关闭所有卡片
+        document.querySelectorAll('.package-item.expanded').forEach(pkg => {
+          pkg.classList.remove('expanded');
         });
 
-        // 切换当前卡片
-        currentCard.classList.toggle('expanded');
+        // 如果当前卡片未展开，则展开它
+        if (!isExpanded) {
+          currentCard.classList.add('expanded');
+        }
       });
 
       // 添加编辑包名称的功能

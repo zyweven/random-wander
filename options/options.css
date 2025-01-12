@@ -2,172 +2,127 @@
 :root {
   --primary-color: #2196F3;
   --primary-dark: #1976D2;
-  --primary-light: rgba(33, 150, 243, 0.1);
   --danger-color: #ff4444;
   --danger-dark: #ff0000;
-  --success-color: #4CAF50;
-  --success-dark: #45a049;
   --text-primary: #2c3e50;
   --text-secondary: #606f7b;
   --border-color: #e2e8f0;
   --background-light: #f8fafc;
-  --spacing-unit: 8px;
-  --border-radius: 8px;
-  --transition-speed: 0.3s;
-  --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-large: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* 基础布局 */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  background-color: white;
-  min-height: 100vh;
+  padding: 20px;
 }
 
-body {
-  background-color: var(--background-light);
-  color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.5;
-}
-
-/* 标题样式 */
+/* 标题 */
 h1 {
   color: var(--text-primary);
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-}
-
-/* 创建新包区域 */
-.package-create {
-  background: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-small);
-  margin-bottom: 2rem;
-  display: flex;
-  gap: 1rem;
+  margin-bottom: 30px;
 }
 
 /* URL输入区域 */
 .url-input {
-  background: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-small);
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* 创建新包区域 */
+.package-create {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
 }
 
 /* 输入框样式 */
-input[type="text"], input[type="url"], select {
+#newUrl, #newPackageName, #packageSelect, #importPackageSelect, #newImportPackageName {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: 8px 12px;
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  transition: all var(--transition-speed);
-  background-color: white;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-input[type="text"]:focus, input[type="url"]:focus, select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-light);
-}
-
-/* 按钮样式 */
+/* 按钮基础样式 */
 button {
-  padding: 0.75rem 1.5rem;
+  padding: 8px 16px;
   border: none;
-  border-radius: var(--border-radius);
-  font-size: 0.95rem;
-  font-weight: 500;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all var(--transition-speed);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  font-size: 14px;
+  transition: all 0.2s;
 }
 
+/* 主要按钮 */
 #addUrl, #createPackage, #importBookmarks, #executeImport {
   background-color: var(--primary-color);
   color: white;
-  min-width: 100px;
 }
 
 #addUrl:hover, #createPackage:hover, #importBookmarks:hover, #executeImport:hover {
   background-color: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-small);
-}
-
-.delete-package, .delete {
-  background-color: var(--danger-color);
-  color: white;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-}
-
-.delete-package:hover, .delete:hover {
-  background-color: var(--danger-dark);
 }
 
 /* 书签导入区域 */
 .bookmark-import {
-  background: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-small);
-  margin-bottom: 2rem;
+  margin: 20px 0;
 }
 
 #importControls {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: var(--background-light);
-  border-radius: var(--border-radius);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
   border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-light);
+  margin-top: 10px;
 }
 
 /* 包网格布局 */
 .package-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+  /* 确保每个网格项独立 */
+  isolation: isolate;
+  /* 防止行高自动调整 */
+  grid-auto-rows: min-content;
 }
 
 /* 包卡片样式 */
 .package-item {
   background: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-small);
-  transition: all var(--transition-speed);
-  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, box-shadow 0.3s;
   border: 1px solid var(--border-color);
-  position: relative;
+  /* 使用 flex 布局替代 grid */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  /* 确保内容不会影响其他卡片 */
+  position: relative;
+  z-index: 1;
+  /* 确保卡片高度不会被其他卡片影响 */
+  height: fit-content;
+  align-self: start;
 }
 
 .package-item:hover {
-  box-shadow: var(--shadow-large);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
+/* 包标题区域 */
 .package-header {
-  padding: 1.25rem;
-  background-color: white;
+  padding: 15px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
@@ -175,124 +130,117 @@ button {
 }
 
 .package-title {
-  font-size: 1.1rem;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 8px;
   flex: 1;
 }
 
 .package-title span {
   flex: 1;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+/* 包控制区域 */
 .package-controls {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 10px;
 }
 
-/* 开关样式美化 */
 .package-switch {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  gap: 6px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
-.package-switch input[type="checkbox"] {
-  appearance: none;
-  width: 2.2rem;
-  height: 1.2rem;
-  background-color: #e2e8f0;
-  border-radius: 1rem;
-  position: relative;
-  cursor: pointer;
-  transition: all var(--transition-speed);
+/* 删除按钮 */
+.delete-package, .delete {
+  background-color: var(--danger-color);
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
 }
 
-.package-switch input[type="checkbox"]::before {
-  content: '';
-  position: absolute;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background-color: white;
-  top: 0.1rem;
-  left: 0.1rem;
-  transition: all var(--transition-speed);
+.delete-package:hover, .delete:hover {
+  background-color: var(--danger-dark);
 }
 
-.package-switch input[type="checkbox"]:checked {
-  background-color: var(--primary-color);
-}
-
-.package-switch input[type="checkbox"]:checked::before {
-  transform: translateX(1rem);
-}
-
-/* 包信息区域优化 */
+/* 包信息区域 */
 .package-info {
-  padding: 1rem 1.25rem;
+  padding: 10px 15px;
   background-color: var(--background-light);
   color: var(--text-secondary);
-  font-size: 0.9rem;
   cursor: pointer;
   user-select: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color var(--transition-speed);
-}
-
-.package-info:hover {
-  background-color: #edf2f7;
+  font-size: 14px;
+  border-top: 1px solid var(--border-color);
 }
 
 .package-info::after {
   content: '▼';
-  font-size: 0.8rem;
-  transition: transform var(--transition-speed);
-  color: var(--text-secondary);
-  opacity: 0.6;
+  font-size: 12px;
+  transition: transform 0.3s;
 }
 
 .package-item.expanded .package-info::after {
   transform: rotate(180deg);
 }
 
-/* URL列表样式优化 */
+/* URL列表容器 */
+.url-list-container {
+  position: relative;
+  overflow: hidden;
+  /* 确保容器不会影响其他元素 */
+  height: 0;
+  transition: height 0.3s ease;
+}
+
+/* URL列表样式 */
 .url-list {
-  max-height: 0;
-  opacity: 0;
-  transition: all var(--transition-speed);
   background: white;
   margin: 0;
   padding: 0;
   list-style: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 展开状态 */
+.package-item.expanded .url-list-container {
+  height: auto;
+  max-height: 300px;
 }
 
 .package-item.expanded .url-list {
-  max-height: 300px;
   opacity: 1;
   overflow-y: auto;
 }
 
+/* 移除之前的绝对定位相关样式 */
+.package-item.expanded {
+  margin-bottom: 0;
+}
+
+/* URL项目样式 */
 .url-item {
-  padding: 0.75rem 1.25rem;
+  padding: 10px 15px;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 10px;
   border-bottom: 1px solid var(--border-color);
-  background-color: white;
-  transition: background-color var(--transition-speed);
+  background: white;
 }
 
 .url-item:last-child {
@@ -301,64 +249,32 @@ button {
 
 .url-item span {
   flex: 1;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.url-item:hover {
-  background-color: var(--background-light);
-}
-
-/* 编辑按钮优化 */
+/* 编辑包名称 */
 .edit-package-name {
-  padding: 0.4rem;
-  font-size: 0.85rem;
+  padding: 4px 8px;
+  font-size: 12px;
   color: var(--text-secondary);
-  background: transparent;
+  background: none;
   border: none;
-  border-radius: var(--border-radius);
+  cursor: pointer;
   opacity: 0.6;
-  transition: all var(--transition-speed);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .edit-package-name:hover {
   opacity: 1;
-  background: var(--primary-light);
-  color: var(--primary-color);
 }
 
-/* 删除按钮优化 */
-.delete-package, .delete {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
-  border-radius: var(--border-radius);
-  background-color: transparent;
-  color: var(--danger-color);
-  border: 1px solid currentColor;
-  transition: all var(--transition-speed);
-}
-
-.delete-package:hover, .delete:hover {
-  background-color: var(--danger-color);
-  color: white;
-  border-color: var(--danger-color);
-}
-
-/* 编辑模式样式 */
 .package-title.editing input {
   flex: 1;
-  padding: 0.4rem 0.8rem;
-  font-size: 1rem;
-  font-weight: 500;
+  padding: 4px 8px;
+  font-size: 14px;
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: white;
+  border-radius: 4px;
 }
 
 .package-title.editing span,
@@ -366,39 +282,134 @@ button {
   display: none;
 }
 
-/* 滚动条样式 */
-.url-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.url-list::-webkit-scrollbar-track {
-  background: var(--background-light);
-}
-
-.url-list::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
-  border-radius: 3px;
-}
-
-.url-list::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
-}
-
 /* 响应式调整 */
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
-  }
-  
-  .package-grid {
-    grid-template-columns: 1fr;
+    padding: 15px;
   }
   
   .url-input, .package-create {
     flex-direction: column;
   }
   
-  button {
-    width: 100%;
+  .package-grid {
+    grid-template-columns: 1fr;
+  }
+} 
+
+/* 输入框和选择框基础样式 */
+input[type="text"],
+input[type="url"],
+select {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: white;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* 输入框和选择框悬停状态 */
+input[type="text"]:hover,
+input[type="url"]:hover,
+select:hover {
+  border-color: var(--primary-color);
+}
+
+/* 输入框和选择框焦点状态 */
+input[type="text"]:focus,
+input[type="url"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 选择框特殊样式 */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23606f7b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 35px;
+}
+
+/* 禁用状态样式 */
+input[type="text"]:disabled,
+input[type="url"]:disabled,
+select:disabled {
+  background-color: var(--background-light);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* 占位符文本样式 */
+input::placeholder {
+  color: #a0aec0;
+}
+
+/* 输入框组样式 */
+.url-input,
+.package-create,
+#importControls {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+/* 输入框组悬停效果 */
+.url-input:focus-within,
+.package-create:focus-within,
+#importControls:focus-within {
+  box-shadow: var(--shadow-md);
+}
+
+/* 书签导入控件样式优化 */
+#importControls {
+  background: white;
+  margin-top: 15px;
+}
+
+/* 输入验证样式 */
+input:invalid {
+  border-color: var(--danger-color);
+}
+
+input:invalid:focus {
+  box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
+}
+
+/* 自动填充样式优化 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  -webkit-text-fill-color: var(--text-primary);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* 选择框选项样式 */
+select option {
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="url"],
+  select {
+    font-size: 16px; /* 防止 iOS 缩放 */
+    padding: 12px;
+  }
+  
+  select {
+    background-position: right 12px center;
   }
 } 
