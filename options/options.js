@@ -30,27 +30,135 @@ document.addEventListener('DOMContentLoaded', () => {
       // 创建包的显示区域
       const div = document.createElement('div');
       div.className = 'package-item';
-      div.innerHTML = `
-        <div class="package-header">
-          <span class="package-title">${name}</span>
-          <div class="package-controls">
-            <label class="package-switch">
-              <input type="checkbox" ${pkg.enabled ? 'checked' : ''} data-package="${name}">
-              启用
-            </label>
-            <button class="delete-package" data-package="${name}">删除包</button>
-          </div>
+      
+      // 创建包的各个元素
+      const header = document.createElement('div');
+      header.className = 'package-header';
+      header.innerHTML = `
+        <div class="package-title">
+          <span>${name}</span>
+          <button class="edit-package-name" title="编辑包名称">✎</button>
+          <input type="text" value="${name}" style="display: none;">
         </div>
-        <ul class="url-list">
-          ${pkg.urls.map(url => `
-            <li class="url-item">
-              <span title="${url}">${url}</span>
-              <button class="delete" data-package="${name}" data-url="${url}">删除</button>
-            </li>
-          `).join('')}
-        </ul>
+        <div class="package-controls">
+          <label class="package-switch">
+            <input type="checkbox" ${pkg.enabled ? 'checked' : ''} data-package="${name}">
+            启用
+          </label>
+          <button class="delete-package" data-package="${name}">删除</button>
+        </div>
       `;
+
+      const info = document.createElement('div');
+      info.className = 'package-info';
+      info.innerHTML = `包含 ${pkg.urls.length} 个网址`;
+
+      const urlList = document.createElement('ul');
+      urlList.className = 'url-list';
+      urlList.innerHTML = pkg.urls.map(url => `
+        <li class="url-item">
+          <span title="${url}">${url}</span>
+          <button class="delete" data-package="${name}" data-url="${url}">删除</button>
+        </li>
+      `).join('');
+
+      // 组装包的结构
+      div.appendChild(header);
+      div.appendChild(info);
+      div.appendChild(urlList);
       packageList.appendChild(div);
+
+      // 为信息区域添加点击事件
+      info.addEventListener('click', (e) => {
+        // 阻止事件冒泡
+        e.stopPropagation();
+        e.preventDefault();
+
+        // 如果点击的是控制按钮，不触发展开/收起
+        if (e.target.matches('button, input, label') || 
+            e.target.closest('.package-controls')) {
+          return;
+        }
+
+        // 获取当前卡片
+        const currentCard = div;
+
+        // 关闭其他所有卡片
+        document.querySelectorAll('.package-item').forEach(pkg => {
+          if (pkg !== currentCard) {
+            pkg.classList.remove('expanded');
+          }
+        });
+
+        // 切换当前卡片
+        currentCard.classList.toggle('expanded');
+      });
+
+      // 添加编辑包名称的功能
+      const titleContainer = header.querySelector('.package-title');
+      const titleSpan = titleContainer.querySelector('span');
+      const editButton = titleContainer.querySelector('.edit-package-name');
+      const titleInput = titleContainer.querySelector('input');
+
+      // 点击编辑按钮进入编辑模式
+      editButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        titleContainer.classList.add('editing');
+        titleInput.value = titleSpan.textContent;
+        titleInput.style.display = 'block';
+        titleInput.focus();
+      });
+
+      // 处理编辑完成
+      titleInput.addEventListener('blur', async () => {
+        const newName = titleInput.value.trim();
+        const oldName = titleSpan.textContent;
+        
+        if (newName && newName !== oldName) {
+          try {
+            const { packages = {} } = await chrome.storage.sync.get(['packages']);
+            
+            // 检查新名称是否已存在
+            if (packages[newName]) {
+              alert('包名已存在');
+              titleInput.value = oldName;
+            } else {
+              // 创建新的包对象并保持原有数据
+              packages[newName] = {
+                ...packages[oldName],
+                urls: [...packages[oldName].urls]
+              };
+              // 删除旧的包
+              delete packages[oldName];
+              
+              await chrome.storage.sync.set({ packages });
+              // 重新加载包列表
+              loadPackages();
+            }
+          } catch (error) {
+            console.error('修改包名称时出错:', error);
+            alert('修改包名称时出错，请重试');
+          }
+        }
+        
+        titleContainer.classList.remove('editing');
+        titleInput.style.display = 'none';
+      });
+
+      // 处理按下回车键
+      titleInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          titleInput.blur();
+        }
+      });
+
+      // 处理按下 Esc 键取消编辑
+      titleInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          titleInput.value = titleSpan.textContent;
+          titleInput.blur();
+        }
+      });
     });
   }
 
