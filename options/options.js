@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // 创建包的显示区域
       const div = document.createElement('div');
       div.className = 'package-item';
+      div.setAttribute('data-enabled', pkg.enabled);
       
       // 创建包的各个元素
       const header = document.createElement('div');
@@ -213,7 +214,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (e.target.matches('input[type="checkbox"]')) {
       const packageName = e.target.dataset.package;
-      packages[packageName].enabled = e.target.checked;
+      const isEnabled = e.target.checked;
+      packages[packageName].enabled = isEnabled;
+      
+      // 更新包的视觉状态
+      const packageItem = e.target.closest('.package-item');
+      packageItem.setAttribute('data-enabled', isEnabled);
+      
       await chrome.storage.sync.set({ packages });
     }
     
