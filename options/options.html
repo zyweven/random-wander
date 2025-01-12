@@ -7,17 +7,42 @@
 <body>
   <div class="container">
     <h1>随机漫游设置</h1>
+    
+    <!-- 创建新包 -->
+    <div class="package-create">
+      <input type="text" id="newPackageName" placeholder="输入新包名称">
+      <button id="createPackage">创建新包</button>
+    </div>
+
+    <!-- URL输入区域 -->
     <div class="url-input">
       <input type="url" id="newUrl" placeholder="输入网址">
+      <select id="packageSelect">
+        <option value="">选择包...</option>
+      </select>
       <button id="addUrl">添加</button>
     </div>
+
+    <!-- 书签导入区域 -->
     <div class="bookmark-import">
       <button id="importBookmarks">从书签导入</button>
-      <select id="bookmarkFolder" style="display: none;">
-        <option value="">选择书签文件夹...</option>
-      </select>
+      <div id="importControls" style="display: none;">
+        <select id="bookmarkFolder">
+          <option value="">选择书签文件夹...</option>
+        </select>
+        <select id="importPackageSelect">
+          <option value="">选择导入到的包...</option>
+          <option value="new">创建新包</option>
+        </select>
+        <input type="text" id="newImportPackageName" 
+               placeholder="新包名称" 
+               style="display: none;">
+        <button id="executeImport">导入</button>
+      </div>
     </div>
-    <ul id="urlList"></ul>
+
+    <!-- 包列表区域 -->
+    <div class="package-grid" id="packageList"></div>
   </div>
   <script src="options.js"></script>
 </body>
