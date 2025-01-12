@@ -61,13 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
       urlList.className = 'url-list';
       urlList.innerHTML = pkg.urls.map(url => `
         <li class="url-item">
-          <a href="${url}" 
-             title="${url}"
-             target="_blank" 
-             rel="noopener noreferrer" 
-             class="url-link">
-            ${url}
-          </a>
+          <img class="url-favicon" src="${getFaviconUrl(url)}" alt="" 
+               onerror="this.style.display='none'">
+          <div class="url-content">
+            <a href="${url}" 
+               title="${url}"
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="url-link">
+              <div class="url-text">
+                <div class="url-site-name">${getWebsiteName(url)}</div>
+                <div class="url-full">${url}</div>
+              </div>
+            </a>
+          </div>
           <button class="delete" data-package="${name}" data-url="${url}">删除</button>
         </li>
       `).join('');
@@ -474,6 +481,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+
+  // 添加一个函数来获取网站图标
+  function getFaviconUrl(url) {
+    try {
+      const urlObj = new URL(url);
+      return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+    } catch {
+      return '';
+    }
+  }
+
+  // 添加一个函数来获取网站名称
+  function getWebsiteName(url) {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.hostname.replace('www.', '');
+    } catch {
+      return url;
+    }
+  }
+
+  // 点击事件处理
+  document.addEventListener('click', (e) => {
+    const expandedPackages = document.querySelectorAll('.package-item.expanded');
+    if (!Array.from(expandedPackages).some(pkg => pkg.contains(e.target))) {
+      expandedPackages.forEach(pkg => {
+        pkg.classList.remove('expanded');
+      });
+    }
+  });
 
   loadPackages();
 }); 

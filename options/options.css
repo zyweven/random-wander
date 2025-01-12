@@ -306,10 +306,10 @@ button {
 
 /* URL项目样式 */
 .url-item {
-  padding: 10px 15px;
+  padding: 12px 15px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   border-bottom: 1px solid var(--border-color);
   background: white;
   transition: background-color 0.2s ease;
@@ -485,20 +485,10 @@ select option {
 
 /* URL链接样式 */
 .url-link {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--text-primary);
+  display: block;
   text-decoration: none;
-  padding: 4px 0;
-  transition: color 0.2s ease;
+  color: inherit;
 }
-
-.url-link:hover {
-  color: var(--primary-color);
-  text-decoration: underline;
-} 
 
 /* 禁用状态的包样式 */
 .package-item[data-enabled="false"] {
@@ -513,4 +503,70 @@ select option {
 .package-switch span {
   font-size: 13px;
   font-weight: 500;
+} 
+
+/* 网站图标样式 */
+.url-favicon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* 网站名称样式 */
+.url-site-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 完整URL样式 */
+.url-full {
+  font-size: 12px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 悬停效果 */
+.url-item:hover {
+  background-color: var(--background-light);
+}
+
+.url-item:hover .delete {
+  opacity: 1;
+}
+
+.url-item:hover .url-site-name {
+  color: var(--primary-color);
+}
+
+/* 删除按钮样式 */
+.url-item .delete {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  padding: 4px 8px;
+  background-color: var(--danger-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* URL内容容器 */
+.url-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* URL文本容器 */
+.url-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 } 
